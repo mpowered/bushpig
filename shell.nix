@@ -1,13 +1,4 @@
-with import <nixpkgs> {};
-stdenv.mkDerivation {
-  name = "env";
-  buildInputs = [
-    ruby.devEnv
-    git
-    libxml2
-    libxslt
-    pkg-config
-    bundix
-    gnumake
-  ];
-}
+let
+  pkgs = import <nixpkgs> {};
+in
+  pkgs.mkShell { buildInputs = with pkgs; [ ruby bundler bundix ]; }
