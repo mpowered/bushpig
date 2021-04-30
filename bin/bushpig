@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 
-require 'bushpig'
-Bushpig.run
+require 'bushpig/cli'
+Bushpig::CLI.start(ARGV)
