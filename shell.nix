@@ -1,13 +1,13 @@
-with (import <nixpkgs> {});
-let
-  env = bundlerEnv {
-    name = "bushpig-bundler-env";
-    inherit ruby;
-    gemfile  = ./Gemfile;
-    lockfile = ./Gemfile.lock;
-    gemset   = ./gemset.nix;
-  };
-in stdenv.mkDerivation {
-  name = "bushpig";
-  buildInputs = [ env ];
+with import <nixpkgs> {};
+stdenv.mkDerivation {
+  name = "env";
+  buildInputs = [
+    ruby.devEnv
+    git
+    libxml2
+    libxslt
+    pkg-config
+    bundix
+    gnumake
+  ];
 }

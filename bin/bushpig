@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 
-require_relative '../lib/bushpig'
+require 'bushpig'
 Bushpig.run

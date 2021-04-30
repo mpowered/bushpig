@@ -54,6 +54,12 @@
       engine = "maglev";
       version = "2.5";
     } {
+      engine = "maglev";
+      version = "2.6";
+    } {
+      engine = "maglev";
+      version = "2.6";
+    } {
       engine = "rbx";
     } {
       engine = "rbx";
@@ -82,6 +88,9 @@
       engine = "rbx";
       version = "2.5";
     } {
+      engine = "rbx";
+      version = "2.6";
+    } {
       engine = "ruby";
     } {
       engine = "ruby";
@@ -135,6 +144,12 @@
     } {
       engine = "ruby";
       version = "2.5";
+    } {
+      engine = "ruby";
+      version = "2.6";
+    } {
+      engine = "ruby";
+      version = "2.6";
     }];
     source = {
       path = ./.;
