@@ -22,7 +22,7 @@ module Bushpig
     @redis = if hash.is_a?(ConnectionPool)
       hash
     else
-      ConnectionPool.new(hash)
+      ConnectionPool.new(size: 5, timeout: 5) { Redis.new(hash) }
     end
   end
 
@@ -46,6 +46,6 @@ module Bushpig
   end
 
   def self.server?
-    defined?(Sidekiq::CLI)
+    defined?(Bushpig::CLI)
   end
 end
