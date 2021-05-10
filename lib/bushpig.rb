@@ -8,12 +8,22 @@ module Bushpig
   NAME = "Bushpig"
   LICENSE = "See LICENSE and the MIT License for licensing details."
 
-  def self.redis_pool=(options)
-    @redis_pool = Bushpig::RedisPool.new(options)
+  DEFAULTS = {
+    pool: { size: 5, timeout: 5 },
+    redis: { }
+  }
+
+  def self.options
+    @options ||= DEFAULTS.dup
+  end
+
+  def self.options=(opts)
+    @options = opts
   end
 
   def self.redis_pool
-    @redis_pool ||= Bushpig::RedisPool.new
+    puts options
+    @redis_pool ||= Bushpig::RedisPool.new(options.fetch(:pool), options.fetch(:redis))
   end
 
   def self.ping
@@ -24,11 +34,11 @@ module Bushpig
   end
 
   def self.configure_server
-    yield self if server?
+    yield @options if server?
   end
 
   def self.configure_client
-    yield self unless server?
+    yield @options unless server?
   end
 
   def self.server?
