@@ -6,7 +6,7 @@ module Bushpig
     package_name "bushpig"
     desc "serve", "Run the bushpig server"
     def serve
-      Bushpig.hello
+      Bushpig.ping
     end
   end
 end
