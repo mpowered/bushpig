@@ -8,7 +8,7 @@ module Bushpig
   NAME = "Bushpig"
   LICENSE = "See LICENSE and the MIT License for licensing details."
 
-  def self.redis=(options)
+  def self.redis_pool=(options)
     @redis_pool = Bushpig::RedisPool.new(options)
   end
 
