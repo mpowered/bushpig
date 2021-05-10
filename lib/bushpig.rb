@@ -14,7 +14,7 @@ module Bushpig
   }
 
   def self.options
-    @options ||= DEFAULTS.dup
+    @options ||= Struct.new(DEFAULTS.dup)
   end
 
   def self.options=(opts)
