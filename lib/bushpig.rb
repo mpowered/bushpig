@@ -13,8 +13,10 @@ module Bushpig
     redis: { }
   }
 
+  Options = Struct.new(:pool, :redis, keyword_init: true)
+
   def self.options
-    @options ||= Struct.new(DEFAULTS.dup)
+    @options ||= Options.new(DEFAULTS.dup)
   end
 
   def self.options=(opts)
@@ -23,7 +25,7 @@ module Bushpig
 
   def self.redis_pool
     puts options
-    @redis_pool ||= Bushpig::RedisPool.new(options.fetch(:pool), options.fetch(:redis))
+    @redis_pool ||= Bushpig::RedisPool.new(options.pool, options.redis)
   end
 
   def self.ping
