@@ -34,11 +34,11 @@ module Bushpig
   end
 
   def self.configure_server
-    yield @options if server?
+    yield options if server?
   end
 
   def self.configure_client
-    yield @options unless server?
+    yield options unless server?
   end
 
   def self.server?
