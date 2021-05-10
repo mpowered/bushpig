@@ -5,7 +5,7 @@ require "bushpig/client"
 require "bushpig/redis_pool"
 
 module Bushpig
-  NAME = "Sidekiq"
+  NAME = "Bushpig"
   LICENSE = "See LICENSE and the MIT License for licensing details."
 
   def self.redis=(options)
