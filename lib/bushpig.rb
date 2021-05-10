@@ -2,36 +2,22 @@
 
 require "bushpig/version"
 require "bushpig/client"
-
-require "connection_pool"
-require "redis"
+require "bushpig/redis_pool"
 
 module Bushpig
   NAME = "Sidekiq"
   LICENSE = "See LICENSE and the MIT License for licensing details."
 
-  def self.redis
-    raise ArgumentError, "requires a block" unless block_given?
-    redis_pool.with do |conn|
-      yield conn
-    end
-  end
-
-  def self.redis=(hash)
-    puts "redis:", hash
-    @redis = if hash.is_a?(ConnectionPool)
-      hash
-    else
-      ConnectionPool.new(size: 5, timeout: 5) { Redis.new(hash) }
-    end
+  def self.redis=(options)
+    @redis_pool = Bushpig::RedisPool.new(options)
   end
 
   def self.redis_pool
-    @redis ||= ConnectionPool.new(size: 5, timeout: 5) { Redis.new }
+    @redis_pool ||= Bushpig::RedisPool.new
   end
 
   def self.ping
-    redis do |conn|
+    redis_pool.with do |conn|
       conn.ping
       puts "HERE"
     end
