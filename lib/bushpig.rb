@@ -48,4 +48,8 @@ module Bushpig
   def self.server?
     defined?(Sidekiq::CLI)
   end
+
+  def rails_app?
+    defined?(::Rails) && ::Rails.respond_to?(:application)
+  end
 end
