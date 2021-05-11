@@ -1,25 +1,26 @@
 require 'thor'
 require 'bushpig'
 
-# SmsScorecardUpdate = Bushpig::Job.keyed([:spend_period_id], :spend_period_id, :sms_subdomain)
-# SmsScorecardUpdate = Bushpig::Job.job(:spend_period_id, :sms_subdomain)
-
 module Bushpig
   class CLI < Thor
     package_name "bushpig"
-    desc "serve", "Run the bushpig server"
-    def serve
+
+    def self.exit_on_failure?
+      true
+    end
+
+    desc "serve SET", "Run the bushpig server"
+    def serve(name)
       require 'rails'
       require File.expand_path("./config/environment.rb")
-      # s = SmsScorecardUpdate.new(1, 'www')
-      # puts s.job_id
 
-      # u = Bushpig::SortedSet.new('scorecard_update')
-      # u.submit(s, 100.0)
+      u = Bushpig::SortedSet.new(name)
 
-      # j = u.fetch
-      # puts j
-      # puts j.job_id
+      while true
+        j = u.fetch
+        puts j
+        puts j.job_id
+      end
     end
   end
 end
