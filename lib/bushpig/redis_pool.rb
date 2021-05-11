@@ -5,21 +5,17 @@ require "redis"
 
 module Bushpig
   class RedisPool
-    DEFAULTS = { size: 5, timeout: 5 }
+    def initialize(options)
+      @size = options[:size]
+      @timeout = options[:timeout]
+      @redis = options[:redis]
 
-    def initialize(options = {}, redis_opts = {})
-      options = DEFAULTS.merge(options)
-
-      @size = options.fetch(:size)
-      @timeout = options.fetch(:timeout)
-      @redis_opts = redis_opts
-
-      @redis = ConnectionPool.new(size: @size, timeout: @timeout) { Redis.new(@redis_opts) }
+      @pool = ConnectionPool.new(size: @size, timeout: @timeout) { Redis.new(@redis) }
     end
 
     def with(options = {})
       raise ArgumentError, "requires a block" unless block_given?
-      @redis.with(options) do |conn|
+      @pool.with(options) do |conn|
         yield conn
       end
     end
