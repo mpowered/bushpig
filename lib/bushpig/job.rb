@@ -22,12 +22,12 @@ module Bushpig
       end
     end
 
-    def self.keyed(unique, *args)
+    def self.keyed(unique_key, *args)
       Struct.new(*args) do
-        @@unique = unique
+        @@unique_key = unique_key
 
         def job_id
-          @@unique.inject(Digest::SHA256.new) do |digest, key|
+          @@unique_key.inject(Digest::SHA256.new) do |digest, key|
             digest.update(self[key].to_s)
           end.hexdigest
         end
