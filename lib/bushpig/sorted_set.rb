@@ -27,7 +27,7 @@ module Bushpig
 
     def fetch
       redis_pool.with do |conn|
-        (_set, jid, _score) = conn.bzpopmin(set_key)
+        (_set, jid, _score) = conn.bzpopmin(set_key, 0)
         payload = conn.get(job_key(jid))
         conn.del(job_key(jid))
         Bushpig::Job.hydrate(jid, payload)
