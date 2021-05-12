@@ -39,8 +39,10 @@ module Bushpig
     end
 
     def complete(job)
-      conn.srem('running', job.job_id)
-      conn.del(job_key(job.job_id))
+      redis_pool.with do |conn|
+        conn.srem('running', job.job_id)
+        conn.del(job_key(job.job_id))
+      end
     end
   end
 end
