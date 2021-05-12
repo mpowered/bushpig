@@ -25,7 +25,7 @@ module Bushpig
       end
     end
 
-    def fetch(timeout = 1.0)
+    def fetch(timeout = 60.0)
       redis_pool.with do |conn|
         res = conn.bzpopmin(set_key, timeout)
         return nil if res.nil?

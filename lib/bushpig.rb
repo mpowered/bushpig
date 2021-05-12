@@ -13,7 +13,7 @@ module Bushpig
 
   DEFAULT = {
     size: 5,
-    timeout: 5,
+    timeout: 120,
     redis: {}
   }.freeze
 
