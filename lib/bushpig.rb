@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
-require "bushpig/version"
-require "bushpig/redis_pool"
-require "bushpig/job"
-require "bushpig/sorted_set"
+require 'bushpig/version'
+require 'bushpig/redis_pool'
+require 'bushpig/job'
+require 'bushpig/sorted_set'
 
 module Bushpig
-  NAME = "Bushpig"
-  LICENSE = "See LICENSE and the MIT License for licensing details."
+  NAME = 'Bushpig'
+  LICENSE = 'See LICENSE and the MIT License for licensing details.'
 
   DEFAULT = {
     size: 5,
     timeout: 5,
     redis: {}
-  }
+  }.freeze
 
   def self.options
     @options ||= DEFAULT.dup

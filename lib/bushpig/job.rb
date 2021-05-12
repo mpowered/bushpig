@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "digest"
-require "securerandom"
-require "json"
+require 'digest'
+require 'securerandom'
+require 'json'
 
 module Bushpig
   module Job
@@ -17,7 +17,7 @@ module Bushpig
         end
 
         def job_payload
-          JSON.generate({class: self.class.name, args: each.to_a})
+          JSON.generate({ class: self.class.name, args: each.to_a })
         end
       end
     end
@@ -32,11 +32,10 @@ module Bushpig
           end.hexdigest
         end
 
-        def job_id=(job_id)
-        end
+        def job_id=(job_id); end
 
         def job_payload
-          JSON.generate({class: self.class.name, args: each.to_a})
+          JSON.generate({ class: self.class.name, args: each.to_a })
         end
       end
     end
