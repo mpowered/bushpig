@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'Simple job system.'
   spec.description   = 'Simple job system.'
-  spec.homepage      = 'https://github.com/mpowered/mpowered-services'
+  spec.homepage      = 'https://github.com/mpowered/bushpig'
   spec.license       = 'MIT'
 
   spec.required_ruby_version = '>= 2.3', '< 3'
