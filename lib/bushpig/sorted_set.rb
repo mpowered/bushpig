@@ -29,11 +29,18 @@ module Bushpig
       redis_pool.with do |conn|
         res = conn.bzpopmin(set_key, timeout)
         return nil if res.nil?
+
         (_set, jid, _score) = res
+        conn.sadd('running', jid)
+
         payload = conn.get(job_key(jid))
-        conn.del(job_key(jid))
         Bushpig::Job.hydrate(jid, payload)
       end
+    end
+
+    def complete(job)
+      conn.srem('running', job.job_id)
+      conn.del(job_key(job.job_id))
     end
   end
 end

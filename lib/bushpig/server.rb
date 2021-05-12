@@ -15,6 +15,7 @@ module Bushpig
         else
           puts j.job_id, j
           handle(j)
+          @set.complete(j)
         end
       end
     end
