@@ -10,8 +10,12 @@ module Bushpig
     def serve
       while true
         j = @set.fetch
-        puts j.job_id, j
-        handle(j)
+        if j.nil?
+          puts 'waiting for queue'
+        else
+          puts j.job_id, j
+          handle(j)
+        end
       end
     end
 

@@ -25,9 +25,11 @@ module Bushpig
       end
     end
 
-    def fetch
+    def fetch(timeout = 1.0)
       redis_pool.with do |conn|
-        (_set, jid, _score) = conn.bzpopmin(set_key, 0)
+        res = conn.bzpopmin(set_key, timeout)
+        return nil if res.nil?
+        (_set, jid, _score) = res
         payload = conn.get(job_key(jid))
         conn.del(job_key(jid))
         Bushpig::Job.hydrate(jid, payload)
