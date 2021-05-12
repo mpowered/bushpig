@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 require 'bushpig/version'
+
 require 'bushpig/redis_pool'
 require 'bushpig/job'
 require 'bushpig/sorted_set'
+require 'bushpig/server'
 
 module Bushpig
   NAME = 'Bushpig'
