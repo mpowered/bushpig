@@ -2,8 +2,7 @@
 
 module Bushpig
   class Server
-    def initialize(pool, queue)
-      @pool = pool
+    def initialize(queue)
       @queue = queue
       @set = Bushpig::SortedSet.new(@queue)
     end

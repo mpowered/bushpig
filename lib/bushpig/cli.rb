@@ -15,7 +15,7 @@ module Bushpig
       require 'rails'
       require File.expand_path('./config/environment.rb')
 
-      server = Bushpig::Server.new(redis_pool, queue)
+      server = Bushpig::Server.new(queue)
       server.serve
     end
   end
