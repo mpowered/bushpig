@@ -10,9 +10,14 @@ module Bushpig
     def serve
       while true
         j = @set.fetch
-        puts j
-        puts j.job_id
+        puts j.job_id, j
+        handle(j)
       end
+    end
+
+    def handle(job)
+      klass = const_get("#{job.class.name}Handler")
+      klass.new.handle(job)
     end
   end
 end
