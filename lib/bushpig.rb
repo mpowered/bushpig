@@ -13,8 +13,8 @@ module Bushpig
 
   DEFAULT = {
     size: 5,
-    timeout: 120,
-    redis: {}
+    timeout: 125,
+    redis: { timeout: 60 }
   }.freeze
 
   def self.options
