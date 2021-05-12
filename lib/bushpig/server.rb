@@ -16,7 +16,7 @@ module Bushpig
     end
 
     def handle(job)
-      klass = const_get("#{job.class.name}Handler")
+      klass = Object.const_get("#{job.class.name}Handler")
       klass.new.handle(job)
     end
   end
