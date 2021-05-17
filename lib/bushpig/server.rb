@@ -2,9 +2,8 @@
 
 module Bushpig
   class Server
-    def initialize(pool, queue, timeout = 60.0, &handler)
+    def initialize(pool, timeout = 60.0, &handler)
       @pool = pool
-      @queue = queue
       @timeout = timeout
       @handler = handler
     end
@@ -13,28 +12,24 @@ module Bushpig
       @pool
     end
 
-    def serve
+    def serve(queue)
       loop do
-        j = fetch
+        j = fetch(queue)
         if j.nil?
           puts 'waiting for queue'
         else
           puts j.job_id, j
-          handle(j)
+          # klass = Object.const_get("#{job.class.name}Handler")
+          # klass.new.handle(job)
+          @handler.call(job)
           complete(j)
         end
       end
     end
 
-    def handle(job)
-      @handler.call(job)
-      # klass = Object.const_get("#{job.class.name}Handler")
-      # klass.new.handle(job)
-    end
-
-    def fetch
+    def fetch(queue)
       redis_pool.with do |conn|
-        res = conn.bzpopmin(Bushpig.set_key(@queue), @timeout)
+        res = conn.bzpopmin(Bushpig.set_key(queue), @timeout)
         return nil if res.nil?
 
         (_set, jid, _score) = res
