@@ -4,7 +4,7 @@ module Bushpig
   class Server
     def initialize(pool, timeout = 60.0, &handler)
       @pool = pool
-      @timeout = timeout
+      @timeout = timeout.to_f
       @handler = handler
     end
 
@@ -35,7 +35,7 @@ module Bushpig
         (_set, jid, _score) = res
         conn.sadd('running', jid)
 
-        payload = conn.get(Bushpug.job_key(jid))
+        payload = conn.get(Bushpig.job_key(jid))
         Bushpig::Job.hydrate(jid, payload)
       end
     end
