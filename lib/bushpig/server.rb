@@ -15,19 +15,33 @@ module Bushpig
     def serve(queue)
       loop do
         job = fetch(queue)
-        if job.nil?
-          puts 'waiting for queue'
-        else
-          puts job.job_id, job
-          @handler.call(job)
-          complete(job)
-        end
+        skip if job.nil?
+
+        handle(job)
+        complete(job)
+      end
+    end
+
+    def handle(job)
+      puts job.job_id, job
+      begin
+        @handler.call(job)
+      rescue StandardError => e
+        # Job handler raised exception
+        # TODO: log exception
+        puts "Exception raised in job handler: #{e}"
       end
     end
 
     def fetch(queue)
       redis_pool.with do |conn|
-        res = conn.bzpopmin(Bushpig.set_key(queue), @timeout)
+        begin
+          res = conn.bzpopmin(Bushpig.set_key(queue), @timeout)
+        rescue Redis::TimeoutError
+          # TODO: warn user (once) that redis timeout set lower than pop timeout
+          conn.disconnect
+          res = nil
+        end
         return nil if res.nil?
 
         (_set, jid, _score) = res

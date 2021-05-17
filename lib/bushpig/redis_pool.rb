@@ -16,7 +16,16 @@ module Bushpig
     def with(options = {}, &block)
       raise ArgumentError, 'requires a block' unless block_given?
 
-      @pool.with(options, &block)
+      retries = 1
+      begin
+        @pool.with(options, &block)
+      rescue Redis::TimeoutError
+        if retries > 0
+          retries -= 1
+          retry
+        end
+        raise
+      end
     end
   end
 end
