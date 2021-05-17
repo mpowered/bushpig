@@ -15,7 +15,7 @@ module Bushpig
     def serve(queue)
       loop do
         job = fetch(queue)
-        skip if job.nil?
+        next if job.nil?
 
         handle(job)
         complete(job)
