@@ -9,7 +9,6 @@ module Bushpig
       @size = size
       @timeout = timeout
       @redis_options = redis_options
-      puts @size, @timeout, @redis_options
 
       @pool = ConnectionPool.new(size: @size, timeout: @timeout) { Redis.new(@redis_options) }
     end
