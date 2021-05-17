@@ -4,40 +4,18 @@ require 'bushpig/version'
 
 require 'bushpig/redis_pool'
 require 'bushpig/job'
-require 'bushpig/sorted_set'
+require 'bushpig/client'
 require 'bushpig/server'
 
 module Bushpig
   NAME = 'Bushpig'
   LICENSE = 'See LICENSE and the MIT License for licensing details.'
 
-  DEFAULT = {
-    size: 5,
-    timeout: 125,
-    redis: { timeout: 60 }
-  }.freeze
-
-  def self.options
-    @options ||= DEFAULT.dup
+  def self.set_key(queue)
+    "set:#{queue}"
   end
 
-  def self.options=(opts)
-    @options = opts
-  end
-
-  def self.redis_pool
-    @redis_pool ||= Bushpig::RedisPool.new(options)
-  end
-
-  def self.configure_server
-    yield options if server?
-  end
-
-  def self.configure_client
-    yield options unless server?
-  end
-
-  def self.server?
-    defined?(Bushpig::CLI)
+  def self.job_key(job_id)
+    "job:#{job_id}"
   end
 end
