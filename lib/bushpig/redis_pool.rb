@@ -5,7 +5,7 @@ require 'redis'
 
 module Bushpig
   class RedisPool
-    def initialize(size = 1, timeout = 5, redis_options = {})
+    def initialize(size: 1, timeout: 5, redis_options: {})
       @size = size
       @timeout = timeout
       @redis_options = redis_options
