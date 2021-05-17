@@ -14,7 +14,7 @@ module Bushpig
       Time.now.to_f
     end
 
-    def submit(queue, job, score=default_score)
+    def submit(queue, job, score = default_score)
       redis_pool.with do |conn|
         conn.set(Bushpig.job_key(job.job_id), job.job_payload)
         conn.zadd(Bushpig.set_key(queue), score, job.job_id)

@@ -12,7 +12,8 @@ module Bushpig
   LICENSE = 'See LICENSE and the MIT License for licensing details.'
 
   def self.client
-    raise "Bushpig client not configured" unless @client
+    raise 'Bushpig client not configured' unless @client
+
     @client
   end
 
@@ -21,7 +22,8 @@ module Bushpig
   end
 
   def self.server
-    raise "Bushpig server not configured" unless @server
+    raise 'Bushpig server not configured' unless @server
+
     @server
   end
 
@@ -33,7 +35,7 @@ module Bushpig
     yield self if server?
   end
 
-  def self.configure_client(pool)
+  def self.configure_client
     yield self unless server?
   end
 
