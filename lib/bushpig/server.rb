@@ -14,15 +14,13 @@ module Bushpig
 
     def serve(queue)
       loop do
-        j = fetch(queue)
-        if j.nil?
+        job = fetch(queue)
+        if job.nil?
           puts 'waiting for queue'
         else
-          puts j.job_id, j
-          # klass = Object.const_get("#{job.class.name}Handler")
-          # klass.new.handle(job)
+          puts job.job_id, job
           @handler.call(job)
-          complete(j)
+          complete(job)
         end
       end
     end
