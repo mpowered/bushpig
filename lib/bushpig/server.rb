@@ -39,7 +39,7 @@ module Bushpig
           res = conn.bzpopmin(Bushpig.set_key(queue), @timeout)
         rescue Redis::TimeoutError
           # TODO: warn user (once) that redis timeout set lower than pop timeout
-          conn.disconnect
+          conn.close
           res = nil
         end
         return nil if res.nil?
