@@ -15,15 +15,20 @@ module Bushpig
 
     def trap_signals
       Signal.trap('INT') do
+        reset_signals
         puts 'INT received, shutdown flagged'
         @done = true
       end
     end
 
+    def reset_signals
+      Signal.trap('INT', 'DEFAULT')
+    end
+
     def serve(queue)
+      puts "Serving queue #{queue}"
       trap_signals
 
-      puts "Serving queue #{queue}"
       until @done
         job = fetch(queue)
         next if job.nil?
@@ -31,6 +36,8 @@ module Bushpig
         handle(job)
         complete(job)
       end
+
+      reset_signals
       puts "Stop serving queue #{queue}"
     end
 
