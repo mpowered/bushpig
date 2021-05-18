@@ -14,8 +14,8 @@ module Bushpig
     end
 
     def trap_signals
-      Signal.trap('TERM') do
-        puts 'TERM received, shutdown flagged'
+      Signal.trap('INT') do
+        puts 'INT received, shutdown flagged'
         @done = true
       end
     end
