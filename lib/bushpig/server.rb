@@ -6,31 +6,51 @@ module Bushpig
       @pool = pool
       @timeout = timeout.to_f
       @handler = handler
+      @done = false
     end
 
     def redis_pool
       @pool
     end
 
-    def serve(queue)
-      puts "Serving queue #{queue}"
-      loop do
-        job = fetch(queue)
-        next if job.nil?
-
-        puts "Job starting: #{job.job_id} #{job}"
-        handle(job)
-        puts "Job completed: #{job.job_id}"
-        complete(job)
+    def trap_signals
+      Signal.trap('TERM') do
+        puts 'TERM received, shutdown flagged'
+        @done = true
       end
     end
 
+    def serve(queue)
+      trap_signals
+
+      puts "Serving queue #{queue}"
+      until @done
+        job = fetch(queue)
+        next if job.nil?
+
+        handle(job)
+        complete(job)
+      end
+      puts "Stop serving queue #{queue}"
+    end
+
     def handle(job)
+      puts "Job starting: jid-#{job.job_id} #{job}"
+      started = monotonic_time
       @handler.call(job)
+      finished = monotonic_time
+      elapsed = finished - started
+      puts "Job completed: jid-#{job.job_id} #{elapsed} seconds"
     rescue StandardError => e
       # Job handler raised exception
-      # TODO: log exception
-      puts "Exception raised in job handler: #{e}"
+      finished = monotonic_time
+      elapsed = finished - started
+      puts "Job raised exception: jid-#{job.job_id} #{elapsed} seconds: #{e}"
+      # TODO: log exception to honeybadger
+    end
+
+    def monotonic_time
+      Process.clock_gettime(Process::CLOCK_MONOTONIC)
     end
 
     def fetch(queue)
