@@ -1,4 +1,10 @@
 #!/usr/bin/env ruby
 
+# frozen_string_literal: true
+
+# don't buffer output (for logging if running as a systemd service)
+$stdout.sync = true
+$stderr.sync = true
+
 require 'bushpig/cli'
 Bushpig::CLI.start(ARGV)
