@@ -4,7 +4,7 @@ module Bushpig
   class Server
     def initialize(pool, timeout: 2, &handler)
       @pool = pool
-      @timeout = timeout.to_f
+      @timeout = timeout.to_i
       @handler = handler
       @done = false
     end
