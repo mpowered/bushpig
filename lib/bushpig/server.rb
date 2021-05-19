@@ -19,10 +19,16 @@ module Bushpig
         puts 'INT received, shutdown flagged'
         @done = true
       end
+      Signal.trap('TERM') do
+        reset_signals
+        puts 'TERM received, shutdown flagged'
+        @done = true
+      end
     end
 
     def reset_signals
       Signal.trap('INT', 'DEFAULT')
+      Signal.trap('TERM', 'DEFAULT')
     end
 
     def serve(queue)
