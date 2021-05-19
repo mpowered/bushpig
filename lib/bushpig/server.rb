@@ -64,7 +64,7 @@ module Bushpig
     end
 
     def notify_exception(job, exception)
-      honeybadger&.notify(exception, context: { job_id: job.id, job: job.to_s })
+      honeybadger&.notify(exception, context: { job_id: job.job_id, job: job.to_s })
     end
 
     def monotonic_time
