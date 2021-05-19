@@ -49,11 +49,22 @@ module Bushpig
       elapsed = finished - started
       puts "Job completed: jid-#{job.job_id} #{elapsed} seconds"
     rescue StandardError => e
-      # Job handler raised exception
       finished = monotonic_time
       elapsed = finished - started
       puts "Job raised exception: jid-#{job.job_id} #{elapsed} seconds: #{e}"
-      # TODO: log exception to honeybadger
+      notify_exception(job, e)
+    end
+
+    def honeybadger
+      @honeybadger ||= begin
+        Honeybadger
+      rescue NameError
+        nil
+      end
+    end
+
+    def notify_exception(job, exception)
+      honeybadger&.notify(exception, context: { job_id: job.id, job: job.to_s })
     end
 
     def monotonic_time
