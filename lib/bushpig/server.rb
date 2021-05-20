@@ -48,7 +48,7 @@ module Bushpig
     end
 
     def handle(job)
-      puts "Job starting: jid-#{job.job_id} #{job}"
+      puts "Job starting: jid-#{job.job_id} jkey-#{job.job_key} #{job}"
       started = monotonic_time
       @handler.call(job)
       finished = monotonic_time
@@ -70,7 +70,7 @@ module Bushpig
     end
 
     def notify_exception(job, exception)
-      honeybadger&.notify(exception, context: { job_id: job.job_id, job: job.to_s })
+      honeybadger&.notify(exception, context: { job_id: job.job_id, job_key: job.job_key, job: job.to_s })
     end
 
     def monotonic_time
@@ -80,7 +80,7 @@ module Bushpig
     def fetch(queue)
       redis_pool.with do |conn|
         begin
-          res = conn.bzpopmin(Bushpig.set_key(queue), @timeout)
+          res = conn.bzpopmin(Bushpig.queue_key(queue), @timeout)
         rescue Redis::TimeoutError
           # TODO: warn user (once) that redis timeout set lower than pop timeout
           conn.close
@@ -88,20 +88,20 @@ module Bushpig
         end
         return nil if res.nil?
 
-        (_set, jid, _score) = res
-        # conn.sadd('running', jid)
+        (_set, key, _score) = res
+        # conn.sadd('running', key)
 
-        payload = conn.get(Bushpig.job_key(jid))
+        payload = conn.get(Bushpig.job_key(key))
         return nil if payload.nil? # most likely job expired
 
-        Bushpig::Job.hydrate(jid, payload)
+        Bushpig::Job.hydrate(payload)
       end
     end
 
     def complete(job)
       redis_pool.with do |conn|
-        # conn.srem('running', job.job_id)
-        conn.del(Bushpig.job_key(job.job_id))
+        # conn.srem('running', job.job_key)
+        conn.del(Bushpig.job_key(job.job_key))
       end
     end
   end

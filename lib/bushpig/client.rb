@@ -19,10 +19,10 @@ module Bushpig
     end
 
     def submit(queue, job, score: default_score, ttl: default_ttl)
-      @callback.call(job)
+      modified = @callback.call(job)
       redis_pool.with do |conn|
-        conn.set(Bushpig.job_key(job.job_id), job.job_payload, ex: ttl)
-        conn.zadd(Bushpig.set_key(queue), score, job.job_id)
+        conn.set(Bushpig.job_key(modified.job_key), modified.job_payload, ex: ttl)
+        conn.zadd(Bushpig.queue_key(queue), score, modified.job_key)
       end
     end
   end

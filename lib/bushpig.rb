@@ -43,11 +43,11 @@ module Bushpig
     defined?(Bushpig::CLI)
   end
 
-  def self.set_key(queue)
+  def self.queue_key(queue)
     "set:#{queue}"
   end
 
-  def self.job_key(job_id)
-    "job:#{job_id}"
+  def self.job_key(job_key)
+    "job:#{job_key}"
   end
 end
