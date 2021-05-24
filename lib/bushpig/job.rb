@@ -11,7 +11,7 @@ module Bushpig
         @job_handler = handler
 
         def self.job_handler
-          @@job_handler
+          @job_handler
         end
 
         def job_id
@@ -38,7 +38,7 @@ module Bushpig
         @unique_key = unique_key
 
         def self.job_handler
-          @@job_handler
+          @job_handler
         end
 
         def job_id
@@ -50,7 +50,7 @@ module Bushpig
         end
 
         def job_key
-          @@unique_key.inject(Digest::SHA256.new) do |digest, key|
+          @unique_key.inject(Digest::SHA256.new) do |digest, key|
             digest.update(self[key].to_s)
           end.hexdigest
         end
