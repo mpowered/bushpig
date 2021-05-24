@@ -45,6 +45,10 @@ module Bushpig
           @job_handler
         end
 
+        def self.job_unique_key
+          @unique_key
+        end
+
         def job_id
           @job_id ||= SecureRandom.hex(32)
         end
@@ -54,7 +58,7 @@ module Bushpig
         end
 
         def job_key
-          @unique_key.inject(Digest::SHA256.new) do |digest, key|
+          self.class.job_unique_key.inject(Digest::SHA256.new.update(self.class.name)) do |digest, key|
             digest.update(self[key].to_s)
           end.hexdigest
         end
