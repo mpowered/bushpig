@@ -29,6 +29,10 @@ module Bushpig
         def job_payload
           JSON.generate({ class: self.class.name, id: job_id, args: each.to_a })
         end
+
+        def handle
+          self.class.job_handler.call(self)
+        end
       end
     end
 
@@ -57,6 +61,10 @@ module Bushpig
 
         def job_payload
           JSON.generate({ class: self.class.name, id: job_id, args: each.to_a })
+        end
+
+        def handle
+          self.class.job_handler.call(self)
         end
       end
     end
