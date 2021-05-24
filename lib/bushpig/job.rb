@@ -6,8 +6,14 @@ require 'json'
 
 module Bushpig
   module Job
-    def self.job(*args)
+    def self.job(handler, *args)
       Struct.new(*args) do
+        @job_handler = handler
+
+        def self.job_handler
+          @@job_handler
+        end
+
         def job_id
           @job_id ||= SecureRandom.hex(32)
         end
@@ -26,9 +32,14 @@ module Bushpig
       end
     end
 
-    def self.keyed(unique_key, *args)
+    def self.keyed(handler, unique_key, *args)
       Struct.new(*args) do
-        @@unique_key = unique_key
+        @job_handler = handler
+        @unique_key = unique_key
+
+        def self.job_handler
+          @@job_handler
+        end
 
         def job_id
           @job_id ||= SecureRandom.hex(32)
