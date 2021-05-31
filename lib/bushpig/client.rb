@@ -19,6 +19,10 @@ module Bushpig
     end
 
     def submit(queue, job, score: default_score, ttl: default_ttl)
+      if Bushpig.testing
+        job.handle
+        return true
+      end
       modified = @callback.call(job)
       redis_pool.with do |conn|
         conn.set(Bushpig.job_key(modified.job_key), modified.job_payload, ex: ttl)

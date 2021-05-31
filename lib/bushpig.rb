@@ -6,6 +6,7 @@ require 'bushpig/redis_pool'
 require 'bushpig/job'
 require 'bushpig/client'
 require 'bushpig/server'
+require 'bushpig/testing'
 
 module Bushpig
   NAME = 'Bushpig'
@@ -29,6 +30,14 @@ module Bushpig
 
   def self.server=(server)
     @server = server
+  end
+
+  def self.testing
+    @testing ||= false
+  end
+
+  def self.testing=(testing)
+    @testing = testing
   end
 
   def self.configure_server
