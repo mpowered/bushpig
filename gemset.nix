@@ -186,7 +186,7 @@
       path = ./.;
       type = "path";
     };
-    version = "0.1.13";
+    version = "0.1.14";
   };
   coderay = {
     groups = ["default" "development"];
