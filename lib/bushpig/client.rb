@@ -28,7 +28,7 @@ module Bushpig
                 conn.zadd(Bushpig.queue_key(queue), score, job.job_key)
               end
             end
-      @callback.call(job, new)
+      @callback&.call(job, new)
     end
   end
 end
