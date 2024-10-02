@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  gem:
+    build:
+      context: .
+      args:
+        RUBY_VERSION:         2.6.8-slim-bullseye # The version that gets installed by docker
+        RUBY_GENERAL_VERSION: 2.6.0               # The version that gems are stored under on the filesystem
+        BUNDLE_VERSION:       2.2.33
+    volumes:
+      - gem_cache:/gems
+      - .:/app
+    networks:
+      default:
+
+volumes:
+  gem_cache:
+
+networks:
+  default:
