@@ -30,7 +30,7 @@ GEM
     redis-client (0.30.1)
       connection_pool
     regexp_parser (2.9.2)
-    rexml (3.3.7)
+    rexml (3.4.4)
     rubocop (1.50.2)
       json (~> 2.3)
       parallel (~> 1.10)
