@@ -5,9 +5,9 @@ services:
     build:
       context: .
       args:
-        RUBY_VERSION:         2.6.8-slim-bullseye # The version that gets installed by docker
-        RUBY_GENERAL_VERSION: 2.6.0               # The version that gems are stored under on the filesystem
-        BUNDLE_VERSION:       2.2.33
+        RUBY_VERSION:         3.3.11-slim-bookworm # The version that gets installed by docker
+        RUBY_GENERAL_VERSION: 3.3.0                # The version that gems are stored under on the filesystem
+        BUNDLE_VERSION:       4.0.15
     volumes:
       - gem_cache:/gems
       - .:/app

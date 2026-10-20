@@ -13,12 +13,12 @@ module Bushpig
       @pool = ConnectionPool.new(size: @size, timeout: @timeout) { Redis.new(@redis_options) }
     end
 
-    def with(options = {}, &block)
+    def with(**options, &block)
       raise ArgumentError, 'requires a block' unless block_given?
 
       retries = 1
       begin
-        @pool.with(options, &block)
+        @pool.with(**options, &block)
       rescue Redis::TimeoutError
         if retries > 0
           retries -= 1
