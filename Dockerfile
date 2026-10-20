@@ -5,7 +5,7 @@ FROM ruby:${RUBY_VERSION}
 LABEL maintainer="gabriel@zero-one.io"
 
 RUN apt-get update  --quiet=2 \
-    && apt-get install --quiet=2 --no-install-recommends git make gcc \
+    && apt-get install --quiet=2 --no-install-recommends git make gcc libc6-dev \
     && rm --recursive --force /var/lib/cache/
 
 RUN addgroup app \
