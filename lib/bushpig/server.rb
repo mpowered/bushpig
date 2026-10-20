@@ -84,7 +84,7 @@ module Bushpig
     def fetch(queue)
       redis_pool.with do |conn|
         begin
-          res = conn.bzpopmin(Bushpig.queue_key(queue), @timeout)
+          res = conn.bzpopmin(Bushpig.queue_key(queue), timeout: @timeout)
         rescue Redis::TimeoutError
           # TODO: warn user (once) that redis timeout set lower than pop timeout
           conn.close
