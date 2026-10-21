@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bushpig (0.1.23)
+    bushpig (0.1.24)
       connection_pool (>= 2.2, < 4)
       json (>= 1.8)
       redis (>= 5.0, < 7)
