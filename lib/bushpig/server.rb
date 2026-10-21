@@ -38,7 +38,7 @@ module Bushpig
       until @done
         job = fetch(queue)
         if job.nil?
-          ActiveRecord::Base.clear_active_connections!
+          ActiveRecord::Base.connection_handler.clear_active_connections!
           next
         end
 
@@ -62,7 +62,7 @@ module Bushpig
       elapsed = finished - started
       puts "Job raised exception: jid-#{job.job_id} #{elapsed} seconds: #{e}"
       notify_exception(job, e)
-      ActiveRecord::Base.clear_active_connections!
+      ActiveRecord::Base.connection_handler.clear_active_connections!
     end
 
     def honeybadger
